@@ -2,6 +2,7 @@
 
 namespace Bundle\Site;
 
+use Bolt\Events\QueryEvents;
 use Bolt\Events\StorageEvents;
 use Bolt\Extension\SimpleExtension;
 use Bundle\Site\Listeners\StorageEventsListener;
@@ -44,6 +45,7 @@ class CustomisationExtension extends SimpleExtension
     {
         return [
             $this,
+            new Providers\QueryServiceProvider(),
             new Providers\StorageServiceProvider(),
             new Providers\ConfigServiceProvider($this->getConfig()),
         ];
@@ -51,10 +53,12 @@ class CustomisationExtension extends SimpleExtension
 
     protected function subscribe(EventDispatcherInterface $dispatcher)
     {
-        /** @var StorageEventsListener $storageListener */
         $storageListener = $this->getContainer()['translate.listeners.storage'];
+
+        $queryListener = $this->getContainer()['translate.listeners.query'];
 
         $dispatcher->addListener(StorageEvents::POST_SAVE, [$storageListener, 'onRecordCreate']);
         $dispatcher->addListener(StorageEvents::PRE_SAVE, [$storageListener, 'onRecordModify']);
+        $dispatcher->addListener(QueryEvents::PARSE, [$queryListener, 'onQueryParse']);
     }
 }

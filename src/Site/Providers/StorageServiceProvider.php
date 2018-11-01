@@ -4,6 +4,8 @@ namespace Bundle\Site\Providers;
 
 
 use Bundle\Site\Config\Config;
+use Bundle\Site\Config\LocaleResolver;
+use Bundle\Site\Listeners\QueryEventsListener;
 use Bundle\Site\Listeners\StorageEventsListener;
 use Bundle\Site\Storage\Database\Schema\Builder\ContentTranslationTables;
 use Bundle\Site\Storage\Database\Schema\Manager;
@@ -104,6 +106,10 @@ class StorageServiceProvider implements ServiceProviderInterface
             return new StorageEventsListener(
                 $app
             );
+        });
+
+        $app['translate.listeners.query'] = $app::share(function($app) {
+            return new QueryEventsListener($app);
         });
     }
 

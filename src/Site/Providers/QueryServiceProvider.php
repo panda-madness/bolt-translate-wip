@@ -3,23 +3,13 @@
 namespace Bundle\Site\Providers;
 
 
-use Bundle\Site\Config\Config;
-use Bundle\Site\Config\LocaleResolver;
+use Bolt\Storage\Query\ContentQueryParser;
+use Bundle\Site\Storage\Query\Directive\TranslateDirective;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class ConfigServiceProvider implements ServiceProviderInterface
+class QueryServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * @var array
-     */
-    protected $config;
-
-    public function __construct($config)
-    {
-        $this->config = $config;
-    }
-
     /**
      * Registers services on the given app.
      *
@@ -28,13 +18,14 @@ class ConfigServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['translate.config'] = $app::share(function($app) {
-            return new Config($this->config, $app['config']);
-        });
+        $app['query.parser'] = $app->extend(
+            'query.parser',
+            function (ContentQueryParser $parser) {
+                $parser->addDirectiveHandler('translate', new TranslateDirective());
 
-        $app['translate.config.locale_resolver'] = $app::share(function($app) {
-            return new LocaleResolver($app['request']);
-        });
+                return $parser;
+            }
+        );
     }
 
     /**

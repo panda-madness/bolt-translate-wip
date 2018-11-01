@@ -18,7 +18,7 @@ payoff: The amazing payoff goes here
 # Don't edit the provided templates directly, because they _will_ get updated
 # in next releases. If you wish to modify a default theme, copy its folder, and
 # change the name here accordingly.
-theme: base-2018
+theme: skeleton
 
 # The locale that'll be used by the application. If no locale is set the
 # fallback locale is 'en_GB'. For available options, see:
@@ -265,7 +265,7 @@ accept_file_types: [ twig, html, js, css, scss, gif, jpg, jpeg, png, ico, zip, t
 # option to show it to all users. You probably do not want to use this in a
 # production environment.
 debug: true
-debug_show_loggedoff: false
+debug_show_loggedoff: true
 debug_permission_audit_mode: false
 # debug_error_level: 8181           # equivalent to E_ALL &~ E_NOTICE &~ E_DEPRECATED &~ E_USER_DEPRECATED &~ E_WARNING
 debug_error_level: -1               # equivalent to E_ALL
